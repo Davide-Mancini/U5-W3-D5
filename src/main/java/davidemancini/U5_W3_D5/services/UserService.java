@@ -42,4 +42,20 @@ public class UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("utente non trovato " + email));
     }
+
+    public User findByIdAndUpdate(UUID id, NewUserDTO body) {
+        User trovato = userRepository.findById(id).orElseThrow(() -> new NotFoundException("utente non trovato"));
+        trovato.setNome(body.nome());
+        trovato.setCognome(body.cognome());
+        trovato.setEmail(body.email());
+        trovato.setPassword(bCrypt.encode(body.password()));
+        User userModificato = userRepository.save(trovato);
+        return userModificato;
+    }
+
+    public void findByIdAndDelete(UUID id) {
+        User trovato = userRepository.findById(id).orElseThrow(() -> new NotFoundException("utente non trovato"));
+        userRepository.delete(trovato);
+
+    }
 }

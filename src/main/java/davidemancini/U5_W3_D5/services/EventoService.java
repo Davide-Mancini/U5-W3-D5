@@ -42,4 +42,26 @@ public class EventoService {
         Evento trovato = eventoRepository.findById(id).orElseThrow(() -> new NotFoundException("evento da eliminare " + id + " non trovato"));
         eventoRepository.delete(trovato);
     }
+
+    public Evento findByIdAndUpdate(UUID id, NewEventoDTO body) {
+        Evento trovato = eventoRepository.findById(id).orElseThrow(() -> new NotFoundException("evento non trovato"));
+        User trovatoUser = userService.findById(body.creatoreEvento());
+        trovato.setTitoloEvento(body.titolo());
+        trovato.setDescrizione(body.descrizione());
+        trovato.setData(body.date());
+        trovato.setLuogo(body.luogo());
+        trovato.setNumPostiDisponibili(body.numPostiDisponibili());
+        trovato.setCreatoreEvento(trovatoUser);
+         
+        return eventoRepository.save(trovato);
+    }
+
+    public void decrementaPosti(UUID id) { //METODO CHE ANDRà A DECREMENTARE IL NUMERO DI POSTI DISPONIBILI PER QUELLO SPECIFICO EVENTO
+        Evento trovato = eventoRepository.findById(id).orElseThrow(() -> new NotFoundException("evento non trovato"));
+        trovato.setNumPostiDisponibili(trovato.getNumPostiDisponibili() - 1);
+        eventoRepository.save(trovato);
+
+
+    }
+
 }

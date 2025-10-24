@@ -29,6 +29,13 @@ public class EventoController {
 
     }
 
+    @PatchMapping("/update-event/{eventoId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ORGANIZZATORE')")
+    public Evento eventoModificato(@PathVariable UUID eventoId, @RequestBody NewEventoDTO body) {
+        return eventoService.findByIdAndUpdate(eventoId, body);
+    }
+
     @DeleteMapping("/delete-event/{eventoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('ORGANIZZATORE')")
@@ -38,7 +45,7 @@ public class EventoController {
 
     @GetMapping("/eventi-disponibili")
     public Page<Evento> tuttiEventi() {
-       
+
         return eventoService.findAll(0, 10, "data");
     }
 }
