@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -54,5 +55,10 @@ public class PrenotazioneService {
         PrenotazioneEvento trovata = prenotazioneRepository.findById(id).orElseThrow(() -> new NotFoundException("Prenotazione con id " + id + " non trovata"));
         prenotazioneRepository.delete(trovata);
 
+    }
+
+    public List<PrenotazioneEvento> prenotazioniPerUser(UUID id) {
+        User trovatoUser = userService.findById(id);
+        return prenotazioneRepository.findAllByUser(trovatoUser);
     }
 }
