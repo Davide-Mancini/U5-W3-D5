@@ -36,4 +36,6 @@ public class UserController {
     public void deleteProfile(@AuthenticationPrincipal User currentAuthenticatedUser) {
         userService.findByIdAndDelete(currentAuthenticatedUser.getId());
     }
+
+   
 }

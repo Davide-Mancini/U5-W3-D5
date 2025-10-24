@@ -2,6 +2,7 @@ package davidemancini.U5_W3_D5.services;
 
 import davidemancini.U5_W3_D5.entities.Evento;
 import davidemancini.U5_W3_D5.entities.User;
+import davidemancini.U5_W3_D5.exceptions.MyUnauthorizedException;
 import davidemancini.U5_W3_D5.exceptions.NotFoundException;
 import davidemancini.U5_W3_D5.payloads.NewEventoDTO;
 import davidemancini.U5_W3_D5.repositories.EventoRepository;
@@ -40,6 +41,7 @@ public class EventoService {
 
     public void deleteEvento(UUID id) {
         Evento trovato = eventoRepository.findById(id).orElseThrow(() -> new NotFoundException("evento da eliminare " + id + " non trovato"));
+
         eventoRepository.delete(trovato);
     }
 
@@ -52,7 +54,7 @@ public class EventoService {
         trovato.setLuogo(body.luogo());
         trovato.setNumPostiDisponibili(body.numPostiDisponibili());
         trovato.setCreatoreEvento(trovatoUser);
-         
+
         return eventoRepository.save(trovato);
     }
 

@@ -4,6 +4,7 @@ import davidemancini.U5_W3_D5.entities.Evento;
 import davidemancini.U5_W3_D5.entities.PrenotazioneEvento;
 import davidemancini.U5_W3_D5.entities.User;
 import davidemancini.U5_W3_D5.exceptions.MyBadRequestException;
+import davidemancini.U5_W3_D5.exceptions.MyUnauthorizedException;
 import davidemancini.U5_W3_D5.exceptions.NotFoundException;
 import davidemancini.U5_W3_D5.payloads.NewEventoDTO;
 import davidemancini.U5_W3_D5.payloads.PrenotaazioneDTO;
@@ -29,6 +30,11 @@ public class PrenotazioneService {
     private UserService userService;
 
 
+    public PrenotazioneEvento findById(UUID id) {
+        PrenotazioneEvento trovato = prenotazioneRepository.findById(id).orElseThrow(() -> new NotFoundException("prenotazione non trovata"));
+        return trovato;
+    }
+
     public Page<PrenotazioneEvento> findAll(int pageNumber, int pageSize, String sortBY) {
         if (pageSize > 30) pageSize = 30;
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBY).ascending());
@@ -51,8 +57,11 @@ public class PrenotazioneService {
 
     }
 
-    public void eliminaPrenotazione(UUID id) {
-        PrenotazioneEvento trovata = prenotazioneRepository.findById(id).orElseThrow(() -> new NotFoundException("Prenotazione con id " + id + " non trovata"));
+    public void eliminaPrenotazione(UUID idPrenotazione, UUID idUser) {
+        PrenotazioneEvento trovata = prenotazioneRepository.findById(idPrenotazione).orElseThrow(() -> new NotFoundException("Prenotazione con id " + idPrenotazione + " non trovata"));
+        if (!trovata.getUser().getId().equals(idUser)) {
+            throw new MyUnauthorizedException("non puoi eliminare la prenotazione perche non hai l'autorizzazione necessaria");
+        }
         prenotazioneRepository.delete(trovata);
 
     }

@@ -1,12 +1,14 @@
 package davidemancini.U5_W3_D5.controllers;
 
 import davidemancini.U5_W3_D5.entities.PrenotazioneEvento;
+import davidemancini.U5_W3_D5.entities.User;
 import davidemancini.U5_W3_D5.payloads.PrenotaazioneDTO;
 import davidemancini.U5_W3_D5.services.EventoService;
 import davidemancini.U5_W3_D5.services.PrenotazioneService;
 import davidemancini.U5_W3_D5.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,10 +31,10 @@ public class PrenotazioneController {
         return prenotazioneService.newPrenotazione(body);
     }
 
-    @DeleteMapping("/elimina-prenotazione/{prenotazioneId}")
+    @DeleteMapping("/me/{prenotazioneId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void eliminaPrenotazione(@PathVariable UUID prenotazioneId) {
-        prenotazioneService.eliminaPrenotazione(prenotazioneId);
+    public void eliminaPrenotazione(@AuthenticationPrincipal User user, @PathVariable UUID prenotazioneId) {
+        prenotazioneService.eliminaPrenotazione(user.getId(), prenotazioneId);
     }
 
     @GetMapping("/{userId}")
