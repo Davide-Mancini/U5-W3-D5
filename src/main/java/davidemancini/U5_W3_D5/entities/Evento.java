@@ -1,7 +1,10 @@
 package davidemancini.U5_W3_D5.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -15,7 +18,7 @@ import java.util.UUID;
 public class Evento {
     @Id
     @GeneratedValue
-    @Setter(AccessLevel.NONE)
+
     private UUID id;
     private String titoloEvento;
     private String descrizione;
@@ -23,7 +26,7 @@ public class Evento {
     private String luogo;
     private int numPostiDisponibili;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "creatore_id")
     private User creatoreEvento;
 
     public Evento(String titoloEvento, String descrizione, LocalDate data, String luogo, int numPostiDisponibili, User creatoreEvento) {
