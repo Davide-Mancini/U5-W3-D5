@@ -37,4 +37,9 @@ public class EventoService {
 
         return eventoRepository.save(newEvento);
     }
+
+    public void deleteEvento(UUID id) {
+        Evento trovato = eventoRepository.findById(id).orElseThrow(() -> new NotFoundException("evento da eliminare " + id + " non trovato"));
+        eventoRepository.delete(trovato);
+    }
 }

@@ -10,18 +10,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
     private EventoService eventoService;
 
-    @PostMapping("/create-event")
-    @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('ORGANIZZATORE')") //SOLO GLI ORGANIZZATORI POSSO CREARE NUOVI EVENTI
-    public Evento newEvento(@RequestBody NewEventoDTO body) {
-        return eventoService.creaNuovoEvento(body);
-    
-    }
+
 }
