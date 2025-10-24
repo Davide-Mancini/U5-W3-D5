@@ -4,6 +4,7 @@ import davidemancini.U5_W3_D5.entities.Evento;
 import davidemancini.U5_W3_D5.entities.PrenotazioneEvento;
 import davidemancini.U5_W3_D5.entities.User;
 import davidemancini.U5_W3_D5.exceptions.MyBadRequestException;
+import davidemancini.U5_W3_D5.exceptions.NotFoundException;
 import davidemancini.U5_W3_D5.payloads.NewEventoDTO;
 import davidemancini.U5_W3_D5.payloads.PrenotaazioneDTO;
 import davidemancini.U5_W3_D5.repositories.EventoRepository;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class PrenotazioneService {
@@ -44,6 +47,12 @@ public class PrenotazioneService {
 
 
         return prenotazioneEventoSalvata;
+
+    }
+
+    public void eliminaPrenotazione(UUID id) {
+        PrenotazioneEvento trovata = prenotazioneRepository.findById(id).orElseThrow(() -> new NotFoundException("Prenotazione con id " + id + " non trovata"));
+        prenotazioneRepository.delete(trovata);
 
     }
 }

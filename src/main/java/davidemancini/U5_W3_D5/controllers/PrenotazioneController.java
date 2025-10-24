@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/prenotazione")
 public class PrenotazioneController {
@@ -24,5 +26,11 @@ public class PrenotazioneController {
     @ResponseStatus(HttpStatus.CREATED)
     public PrenotazioneEvento newPrenotazione(@RequestBody PrenotaazioneDTO body) {
         return prenotazioneService.newPrenotazione(body);
+    }
+
+    @DeleteMapping("/elimina-prenotazione/{prenotazioneId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void eliminaPrenotazione(@PathVariable UUID prenotazioneId) {
+        prenotazioneService.eliminaPrenotazione(prenotazioneId);
     }
 }
